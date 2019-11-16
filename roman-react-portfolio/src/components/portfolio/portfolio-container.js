@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import PortfolioItem from './portfolio-item';
 
@@ -18,7 +19,7 @@ export default class PortfolioContainer extends Component {
         };
 
         this.handleFilter = this.handleFilter.bind(this);
-
+        this.getPortfolioItems = this.getPortfolioItems.bind(this);
     }
 
     handleFilter(filter) {
@@ -27,6 +28,16 @@ export default class PortfolioContainer extends Component {
                 return item.category === filter;
             })
         })
+    }
+
+    getPortfolioItems() {
+        axios.get("https://romanlavery.devcamp.space/portfolio/portfolio_items")
+          .then(response => {
+            console.log("response data", response);
+          })
+          .catch(error => {
+            console.log(error);
+          });
     }
 
     portfolioItems() {
@@ -41,6 +52,8 @@ export default class PortfolioContainer extends Component {
         if (this.state.isLoading) {
             return <div>Loading...</div>;
         }
+
+        this.getPortfolioItems();
 
         return (
             <div>
