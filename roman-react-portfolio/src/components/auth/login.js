@@ -13,7 +13,7 @@ export default class Login extends Component {
     }
 
     handleSubmit(event) {
-
+        event.preventDefault();
     }
 
     handleChange(event) {
