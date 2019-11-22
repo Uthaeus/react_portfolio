@@ -1,7 +1,40 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 
 export default class PortfolioManager extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            items: []
+        }
+    }
+
+    getPortfolioItems() {
+        axios.get("https://romanlavery.devcamp.space/portfolio/portfolio_items", { withCredentials: true })
+          .then(response => {
+            this.setState({
+                items: [...response.data.portfolio_items]
+            })
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    }
+
+    portfolioItems() {
+
+        return this.state.items.map(item => {
+            return <PortfolioItem 
+                        key={item.id} 
+                        item={item} />;
+        })
+    }
+
+    componentDidMount() {
+        this.getPortfolioItems();
+    }
 
     render() {
         return (
@@ -11,7 +44,7 @@ export default class PortfolioManager extends Component {
                 </div>
 
                 <div className="right-column">
-                    <h1>sidebar</h1>
+                    { this.portfolioItems() }
                 </div>
             </div>
         );
